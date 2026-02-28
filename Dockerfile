@@ -24,6 +24,7 @@ COPY --chown=ubuntu --from=ghcr.io/astral-sh/uv:0.8.22 /uv /bin/uv
 # https://docs.astral.sh/uv/guides/integration/docker/#intermediate-layers
 # https://docs.astral.sh/uv/guides/integration/docker/#compiling-bytecode
 # TODO: figure out if `/home/ubuntu/.cache/uv` should be used instead of `/root/.cache/uv`
+COPY --chown=ubuntu uv.lock pyproject.toml ./
 RUN uv sync --frozen --compile-bytecode --no-install-project --no-dev
 COPY --chown=ubuntu . .
 RUN uv sync --frozen --compile-bytecode --no-dev
