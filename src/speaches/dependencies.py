@@ -34,7 +34,9 @@ logger = logging.getLogger(__name__)
 # WARN: Any new module that ends up calling this function directly (not through `FastAPI` dependency injection) should be patched in `tests/conftest.py`
 @lru_cache
 def get_config() -> Config:
-    return Config()
+    config = Config()
+    logger.info(f"[DEBUG] Config initialized: stt_model_ttl={config.stt_model_ttl}, tts_model_ttl={config.tts_model_ttl}, vad_model_ttl={config.vad_model_ttl}")
+    return config
 
 
 async def get_config_async() -> Config:

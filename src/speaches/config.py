@@ -1,7 +1,10 @@
+import logging
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+logger = logging.getLogger(__name__)
 
 type Device = Literal["cpu", "cuda", "auto"]
 
@@ -46,7 +49,10 @@ class Config(BaseSettings):
     the environment variable `LOG_LEVEL` will be mapped to `log_level`, `WHISPER__INFERENCE_DEVICE`(note the double underscore) to `whisper.inference_device`, to set quantization to int8, use `WHISPER__COMPUTE_TYPE=int8`, etc.
     """
 
-    model_config = SettingsConfigDict(env_nested_delimiter="__")
+    model_config = SettingsConfigDict(
+        env_nested_delimiter="__",
+        case_sensitive=False,
+    )
 
     stt_model_ttl: int = Field(default=300, ge=-1)
     """
@@ -143,3 +149,7 @@ class Config(BaseSettings):
     Application will exit if any model fails to download or is not found in the registry.
     Example: ["Systran/faster-whisper-tiny", "rhasspy/piper-voices"]
     """
+
+    def model_post_init(self, __context: Any) -> None:
+        """Log configuration values for debugging."""
+        logger.info(f"Config loaded: stt_model_ttl={self.stt_model_ttl}, tts_model_ttl={self.tts_model_ttl}, vad_model_ttl={self.vad_model_ttl}")
