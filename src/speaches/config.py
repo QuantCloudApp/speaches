@@ -54,14 +54,14 @@ class Config(BaseSettings):
         case_sensitive=False,
     )
 
-    stt_model_ttl: int = Field(default=300, ge=-1)
+    stt_model_ttl: int = Field(default=-1, ge=-1)  # Changed from 300 to -1 for testing
     """
     Time in seconds until a speech to text (stt) model is unloaded after last usage.
     -1: Never unload the model.
     0: Unload the model immediately after usage.
     """
 
-    tts_model_ttl: int = Field(default=300, ge=-1)
+    tts_model_ttl: int = Field(default=-1, ge=-1)  # Changed from 300 to -1 for testing
     """
     Time in seconds until a text to speech (tts) model is unloaded after last usage.
     -1: Never unload the model.

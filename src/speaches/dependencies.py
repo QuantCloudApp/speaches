@@ -88,6 +88,9 @@ def audio_file_dependency(
     file: Annotated[UploadFile, Form()],
 ) -> Audio:
     try:
+        logger.info(
+            f"[AUDIO DEBUG] Received file: {file.filename}, content_type: {file.content_type}, size: {file.size} bytes"
+        )
         logger.debug(
             f"Decoding audio file: {file.filename}, content_type: {file.content_type}, header: {file.headers}, size: {file.size}"
         )
